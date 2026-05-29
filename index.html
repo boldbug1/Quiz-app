@@ -4,18 +4,166 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz App</title>
+    <style>
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #1e293b;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #0f172a;
+    letter-spacing: -0.025em;
+}
+
+.quiz-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 540px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.quiz-question {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #334155;
+    min-height: 60px;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Base button layouts */
+button {
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+/* Styling the actual multiple choice options */
+.quiz-options button[id^="option-"] {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    padding: 14px 20px;
+    border-radius: 8px;
+    text-align: left;
+    width: 100%;
+}
+
+.quiz-options button[id^="option-"]:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+/* Layout context styling for empty utility buttons */
+.quiz-options button[id^="option-"]:empty {
+    display: none;
+}
+
+/* Control buttons (start, next) - target via lack of id attributes */
+#start-btn,
+#next-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Start button styling */
+#start-btn,#next-btn {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.quiz-container > button:hover {
+    background-color: #1d4ed8;
+}
+
+/* Next button styling */
+.quiz-options button:not([id]) {
+    background-color: #0f172a;
+    color: #ffffff;
+    margin-top: 12px;
+    align-self: flex-end;
+}
+
+.quiz-options button:not([id]):hover {
+    background-color: #1e293b;
+}
+
+/* Live Dashboard Scoreboards */
+.score {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.score p {
+    margin: 0;
+}
+
+#right-answer, #wrong-answer {
+    font-variant-numeric: tabular-nums;
+}
+
+#right-answer {
+    color: #16a34a;
+    margin-right: 8px;
+}
+
+#wrong-answer {
+    color: #dc2626;
+}
+    </style>
 </head>
 <body>
     <h1>Quiz App</h1>
     <div class="quiz-container">
-        <button>start</button>
+        <button id="start-btn">start</button>
         <div class="quiz-question"></div>
         <div class="quiz-options">
             <button id="option-1"></button>
             <button id="option-2"></button>
             <button id="option-3"></button>
             <button id="option-4"></button>
-            <button>next</button>
+            <button id="next-btn">next</button>
         </div>
     </div>    
     <div class="score">

@@ -6,20 +6,31 @@ const option3 = document.getElementById("option-3");
 const option4 = document.getElementById("option-4");
 const rightScoreContainer = document.getElementById("right-answer");
 const wrongScoreContainer = document.getElementById("wrong-answer");
+const startBtn = document.getElementById("start-btn");
+const nextBtn = document.getElementById("next-btn");
+
+nextBtn.style.display = "none";
 
 function renderQuestion(question){
     if(question === undefined){
-        questionContainer.innerHTML = "End";
+        questionContainer.innerHTML = "You finished the quiz!!!";
         option1.innerHTML = "";
         option2.innerHTML = "";
         option3.innerHTML = "";
         option4.innerHTML = "";
+        startBtn.style.display = "flex";
+        startBtn.innerHTML = "start";
+        nextBtn.style.display = "none";
         return;
     }
     option1.style.backgroundColor = "";
     option2.style.backgroundColor = "";
     option3.style.backgroundColor = "";
     option4.style.backgroundColor = "";
+    option1.style.color = "black";
+    option2.style.color = "black";
+    option3.style.color = "black";
+    option4.style.color = "black";
 
     questionContainer.innerHTML = question.name;
     option1.innerHTML = question.options[0];
@@ -94,6 +105,8 @@ quizContainer.addEventListener("click",async (e)=>{
             renderScores("wrong",wrongScore);
             isCurrentAnswered = false;
             i = 0;
+            startBtn.style.display = "none";
+            nextBtn.style.display = "flex";
 
             questions = await fetchQuestionsFromAPI();
 
@@ -136,8 +149,14 @@ function renderOptionHighlight(button,color){
     option2.style.backgroundColor = "";
     option3.style.backgroundColor = "";
     option4.style.backgroundColor = "";
+    option1.style.color = "black";
+    option2.style.color = "black";
+    option3.style.color = "black";
+    option4.style.color = "black";
+
 
     button.style.backgroundColor = color;
+    button.style.color = "white";
 }
 
 function renderScores(type,score){
