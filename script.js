@@ -44,10 +44,37 @@ let wrongScore = 0;
 const q1 = questionObject("What is a apple",["fruit","vegi","nothing","bogi"],"fruit");
 const q2 = questionObject("Template",["1","2","3","4"],"2");
 
-const questions = [q1,q2];
+let questions = [];
 
 
-quizContainer.addEventListener("click",(e)=>{
+async function fetchQuestionsFromAPI() {
+    questionContainer.innerHTML = "Loading questions...";
+    const url = 'https://opentdb.com/api.php?amount=5&category=9&type=multiple';
+
+    try{
+        const response = await fetch(url);
+        if(!response.ok) throw new Error("Network response failedd");
+
+        const data = await response.json();
+
+        return data.results.map(apiQ => {
+            const correctAnswer = apiQ.correct_answer;
+
+            const allOptions = [...apiQ.incorrect_answers,correctAnswer];
+            allOptions.sort(()=>Math.random() - 0.5);
+
+            return questionObject(apiQ.question,allOptions,correctAnswer);
+        });
+    }catch(err){
+        console.error("Failed to fetch trivia : ",err);
+        questionContainer.innerHTML = "Error loading questions. Try again";
+        return[];
+    }
+
+}
+
+
+quizContainer.addEventListener("click",async (e)=>{
     const clickedElement = e.target;
    
     if(clickedElement.tagName === "BUTTON"){
@@ -67,7 +94,12 @@ quizContainer.addEventListener("click",(e)=>{
             renderScores("wrong",wrongScore);
             isCurrentAnswered = false;
             i = 0;
+
+            questions = await fetchQuestionsFromAPI();
+
+        if(questions.length > 0){
             renderQuestion(questions[0]);
+        }
             return;
         }
 
@@ -81,7 +113,7 @@ quizContainer.addEventListener("click",(e)=>{
             return;
         }
 
-
+        
         const q = questions[i];
         if(!q){
             return;
